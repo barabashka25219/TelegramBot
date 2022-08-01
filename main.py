@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-import pyrogram
-import os
+import telebot
+import sys
 from check_settings import check_settings
 
-if 'NewsBot.session' not in os.listdir('.'):
-	settings = check_settings()
-	api_id = settings['api_id']
-	api_hash = settings['api_hash']
-	bot_token = settings['bot_token']
+hello_message = "Я обучающий бот. Давай я расскажу тебе как устроен телеграм! :)"
 
-	if api_id == '' or api_hash == '' or bot_token == '':
-		print('Check your settings file.')
+settings = check_settings()
 
+if settings['bot_token'] == '':
+	print('Check your settings file')
+	sys.exit(-1)
 
-	else:
-		client = pyrogram.Client('NewsBot', api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+bot = telebot.TeleBot(settings['bot_token'])
 
-else:
-	client = pyrogram.Client('NewsBot')
-	
+@bot.message_handler(commands=['start'])
+def start(message):
+	bot.send_message(
+			message.chat.id, 
+			f"Привет, {message.from_user.first_name} {hello_message}", 
+			parse_mode='html')
+
+bot.polling(none_stop=True)													
