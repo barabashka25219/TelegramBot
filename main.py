@@ -13,7 +13,9 @@ settings = check_settings()
 
 # get information about target system
 sinfo = system.get_system_info()
-cur_dir = system.get_current_directory()
+path_sep = '/' 
+if sinfo.sysname == 'nt': path_sep = '\\'
+cur_dir = system.get_current_directory(path_sep)
 
 if settings['bot_token'] == '':
 	print('Check your settings file')
@@ -30,10 +32,11 @@ def hello_message(message):
 @bot.message_handler(commands=['dir'])
 def change_dir_message(message):
 	global cur_dir 
+	global path_sep
 	new_dir = message.text.split(' ')
 
 	if len(new_dir) >= 2:
-		new_dir = system.change_dir(new_dir[1])
+		new_dir = system.change_dir(new_dir[1], path_sep)
 
 		if new_dir:
 			cur_dir = new_dir
@@ -45,7 +48,7 @@ def change_dir_message(message):
 # Show files from current directory
 @bot.message_handler(commands=['files'])
 def fileslist_message(message):
-	files = system.get_files(cur_dir)
+	files = system.get_files(cur_dir, path_sep)
 	bot.send_message(message.chat.id, files)
 
 # Show current directory

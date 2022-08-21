@@ -8,33 +8,33 @@ file_icon = u'\U0001F4C3'
 def get_system_info():
 	return os.uname()
 
-def get_current_directory():
-	return os.getcwd()
+def get_current_directory(separator):
+	return os.getcwd() + separator
 
-def get_files(path):
+def get_files(path, separator):
 	files = os.listdir(path)
-	sorted_files_dirs = parse_files(files, path)
+	sorted_files_dirs = parse_files(files, path, separator)
 
 	return sorted_files_dirs
 
-def change_dir(path):
+def change_dir(path, separator):
 	check = os.path.exists(path)
 
 	if check:
-		check = path
+		check = path + separator
 
 	return check
 
 
-def parse_files(files, path):
+def parse_files(files, path, separator):
 	result = ''
 
 	for obj in files:
-		if os.path.isdir(path + '/' + obj):
+		if os.path.isdir(path + separator + obj):
 			folder_with_icon = folder_icon + ' ' + obj + '\n'
 			result += folder_with_icon
 
-		elif os.path.isfile(path + '/' + obj):
+		elif os.path.isfile(path + separator + obj):
 			file_with_icon = file_icon + ' ' + obj + '\n'
 			result += file_with_icon
 
