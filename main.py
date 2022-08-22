@@ -65,6 +65,8 @@ def screenshot_message(message):
 	with open('screenshot.png', 'rb') as file:
 		bot.send_photo(message.chat.id, file)
 
+	system.remove_file('screenshot.png')
+
 # Make webcam photo :)
 @bot.message_handler(commands=['webcamphoto'])
 def webcam_photo_message(message):
@@ -72,6 +74,8 @@ def webcam_photo_message(message):
 
 	with open('cam.png', 'rb') as file:
 		bot.send_photo(message.chat.id, file)
+
+	system.remove_file('cam.png')
 
 # Download file from bot's machine
 @bot.message_handler(commands=['download'])

@@ -49,6 +49,9 @@ def make_screenshot():
 
 	return screen
 
+def remove_file(path):
+	os.remove(path)
+
 def make_webcam_photo():
 	cap = cv2.VideoCapture(0)
 
